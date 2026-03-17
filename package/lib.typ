@@ -90,14 +90,22 @@
     return authors.at(0).family
   }
 }
+
+#let zh-CN-name(author) = {
+  if "given" in author {
+    author.at("family") + author.at("given")
+  } else {
+    author.at("family")
+  }
+}
 #let zh-CN-citeauthor(authors, ETAL: "等", AND: "和") = {
   let len = authors.len()
   if len > 2 {
-    return authors.at(0).family + authors.at(0).given + ETAL
+    return zh-CN-name(authors.at(0)) + ETAL
   } else if len == 2 {
-    return authors.at(0).family + authors.at(0).given + AND + authors.at(1).family + authors.at(1).given
+    return zh-CN-name(authors.at(0)) + AND + zh-CN-name(authors.at(1))
   } else {
-    return authors.at(0).family + authors.at(0).given
+    return zh-CN-name(authors.at(0))
   }
 }
 
