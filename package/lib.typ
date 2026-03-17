@@ -125,6 +125,7 @@
 #let cite-targets = state("cite-targets", ())
 #let cite-session = state("cite-session", 0)
 #let new-citext-session() = {
+  metadata(<citext::end-of-session>)
   cite-targets.update(())
   context {
     cite-session.update(cite-session.get() + 1)
@@ -215,19 +216,29 @@
   show cite.where(form: "full"): it => {
     extcitefull(bib, str(it.key))
   }
-  s
+
+  s + metadata(<citext::end-of-session>)
 }
 
 
 
 #let extbib(bib, column-gutter: 0.65em, row-gutter: 1.2em) = {
   context {
+    let current-session = cite-session.get()
+
+    let end-session-loc = query(metadata.where(value: <citext::end-of-session>))
+      .filter(it => (
+        cite-session.at(it.location()) == current-session
+      ))
+      .first()
+      .location()
+
     grid(
       columns: 2,
       column-gutter: column-gutter,
       row-gutter: row-gutter,
       ..cite-targets
-        .at(here())
+        .at(end-session-loc)
         .enumerate()
         .map(x => {
           let i = x.at(0) + 1

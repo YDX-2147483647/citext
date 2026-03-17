@@ -3,7 +3,7 @@
 #let bib = init-citation(read("test.bib"))
 #show: show-extcite.with(bib: bib, gen-id: true)
 
-
+= 第一部分
 @texbook
 @zjugradthesisrules
 @latex2e
@@ -33,6 +33,10 @@
 
 #extbib(bib)
 
+== 第一部分的附录
+@osqp<citet>
+
+= 第二部分
 #new-citext-session()
 
 
@@ -52,3 +56,6 @@
 
 = 参考文献
 #extbib(bib)
+
+== 第二部分附录
+@osqp<citet>
